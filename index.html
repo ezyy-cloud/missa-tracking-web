@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="${colorPrimary}" />
+    <meta name="description" content="${description}" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" sizes="180x180" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/styles.css">
+    <title>${title}</title>
+    <style>
+      .loader {
+        position: fixed; top: calc(50% - 25px); left: calc(50% - 25px);
+        width: 50px; aspect-ratio: 1; box-sizing: content-box; animation: ll 1s infinite linear;
+        border-radius: 50%; border: 8px solid lightgray; border-right-color: black;
+      }
+      @keyframes ll {to{transform: rotate(1turn)}}
+    </style>
+  </head>
+  <body>
+    <noscript>Enable JavaScript to use <a href="https://missa.ezyy.cloud/">Missa Telematics System</a>.</noscript>
+    <div id="root" class="root"></div>
+    <div class="loader"></div>
+    <script type="module" src="/src/index.jsx" onerror="alert('Loading error.')"></script>
+    <div id="root" class="root"></div>
+    <!--Use the below code snippet to provide real time updates to the live chat plugin without the need of copying and paste each time to your website when changes are made via PBX-->
+    <!-- <call-us-selector phonesystem-url="https://1224.3cx.cloud" party="kingshaynegroup"></call-us-selector> -->
+
+    <!--Incase you don't want real time updates to the live chat plugin when options are changed, use the below code snippet. Please note that each time you change the settings you will need to copy and paste the snippet code to your website-->
+    <call-us
+      phonesystem-url="https://1224.3cx.cloud"
+      style="
+        position: fixed;
+        font:14px 'Product Sans',sans-serif;
+        line-height: 17px;
+        z-index: 0;
+        --call-us-main-accent-color: #212121;
+        --call-us-main-background-color: #ffffff;
+        --call-us-plate-background-color: #212121;
+        --call-us-plate-font-color: #ffeb08;
+        --call-us-main-font-color: #212121;
+        --call-us-agent-bubble-color: #21212110;
+        right: 0px;
+        bottom: 150px;
+      "
+      id="wp-live-chat-by-3CX"
+      minimized="true"
+      animation-style="slideup"
+      party="kingshaynegroup"
+      minimized-style="bubbleright"
+      allow-call="true"
+      allow-video="false"
+      allow-soundnotifications="true"
+      enable-mute="true"
+      enable-onmobile="true"
+      offline-enabled="true"
+      enable="true"
+      ignore-queueownership="true"
+      authentication="both"
+      show-operator-actual-name="true"
+      aknowledge-received="true"
+      gdpr-enabled="false"
+      message-userinfo-format="both"
+      message-dateformat="both"
+      lang="browser"
+      button-icon-type="doublebubble"
+      greeting-visibility="none"
+      greeting-offline-visibility="none"
+      chat-delay="2000"
+      enable-direct-call="true"
+      enable-ga="false"
+    ></call-us>
+    <script
+      defer
+      src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js"
+      id="tcx-callus-js"
+      charset="utf-8"
+    ></script>
+    <!-- Start of HubSpot Embed Code -->
+    <script
+      type="text/javascript"
+      id="hs-script-loader"
+      async
+      defer
+      src="https://js.hs-scripts.com/23189361.js"
+    ></script>
+    <!-- End of HubSpot Embed Code -->
+    <!-- Start of Mailchimp Code -->
+    <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/5ee4fccdf47565f72616e6151/70f04ac40b875fa4eac813de4.js");</script>
+    <!-- End of Mailchimp Embed Code --> 
+  </body>
+</html>
