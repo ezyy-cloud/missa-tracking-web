@@ -1,6 +1,4 @@
 # repository root netlify.toml
-[build]
-  base = "/"
 
 [build]
   command = "npm run build"
