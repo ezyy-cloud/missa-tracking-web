@@ -1,0 +1,26 @@
+# modern netlify.toml
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://traccar.ezyy.cloud:8082/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/socket/*"
+  to = "ws://traccar.ezyy.cloud:8082/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms-conditions"
+  to = "/index.html"
+  status = 200
