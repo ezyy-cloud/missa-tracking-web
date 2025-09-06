@@ -28,3 +28,9 @@
   from = "/terms-conditions"
   to = "/index.html"
   status = 200
+
+# Catch-all redirect for SPA routing - must be last
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
