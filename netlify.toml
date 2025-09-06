@@ -4,6 +4,9 @@
   command = "npm run build"
   publish = "build"
 
+[build.environment]
+  NODE_VERSION = "22.12.0"
+
 [[redirects]]
   from = "/api/*"
   to = "http://traccar.ezyy.cloud:8082/api/:splat"
