@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  Divider, Typography, IconButton, useMediaQuery, Toolbar,
+  Divider, Typography, IconButton, Toolbar,
+  Paper,
 } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import makeStyles from '@mui/styles/makeStyles';
-import { useTheme } from '@mui/material/styles';
-import Drawer from '@mui/material/Drawer';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { makeStyles } from 'tss-react/mui';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useNavigate } from 'react-router-dom';
 import MapView from '../map/core/MapView';
@@ -18,8 +16,10 @@ import { useTranslation } from '../common/components/LocalizationProvider';
 import MapGeocoder from '../map/geocoder/MapGeocoder';
 import { errorsActions } from '../store';
 import MapScale from '../map/MapScale';
+import BackIcon from '../common/components/BackIcon';
+import fetchOrThrow from '../common/util/fetchOrThrow';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     height: '100%',
     display: 'flex',
@@ -35,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   drawer: {
-    zIndex: 1,
-    position: 'relative !important',
+    display: 'flex',
+    flexDirection: 'column',
     [theme.breakpoints.up('sm')]: {
       width: theme.dimensions.drawerWidthDesktop,
     },
     [theme.breakpoints.down('sm')]: {
-      height: `${theme.dimensions.drawerHeightPhone} !important`,
+      height: theme.dimensions.drawerHeightPhone,
     },
   },
   mapContainer: {
@@ -56,13 +56,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GeofencesPage = () => {
-  const theme = useTheme();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useTranslation();
-
-  const isPhone = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [selectedGeofenceId, setSelectedGeofenceId] = useState();
 
@@ -79,17 +76,13 @@ const GeofencesPage = () => {
       const area = `LINESTRING (${coordinates})`;
       const newItem = { name: t('sharedGeofence'), area };
       try {
-        const response = await fetch('/api/geofences', {
+        const response = await fetchOrThrow('/api/geofences', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newItem),
         });
-        if (response.ok) {
-          const item = await response.json();
-          navigate(`/settings/geofence/${item.id}`);
-        } else {
-          throw Error(await response.text());
-        }
+        const item = await response.json();
+        navigate(`/settings/geofence/${item.id}`);
       } catch (error) {
         dispatch(errorsActions.push(error.message));
       }
@@ -103,15 +96,10 @@ const GeofencesPage = () => {
   return (
     <div className={classes.root}>
       <div className={classes.content}>
-        <Drawer
-          className={classes.drawer}
-          anchor={isPhone ? 'bottom' : 'left'}
-          variant="permanent"
-          classes={{ paper: classes.drawer }}
-        >
+        <Paper square className={classes.drawer}>
           <Toolbar>
             <IconButton edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
-              <ArrowBackIcon />
+              <BackIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>{t('sharedGeofences')}</Typography>
             <label htmlFor="upload-gpx">
@@ -125,7 +113,7 @@ const GeofencesPage = () => {
           </Toolbar>
           <Divider />
           <GeofencesList onGeofenceSelected={setSelectedGeofenceId} />
-        </Drawer>
+        </Paper>
         <div className={classes.mapContainer}>
           <MapView>
             <MapGeofenceEdit selectedGeofenceId={selectedGeofenceId} />

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import Stepper from '@mui/material/Stepper';
@@ -89,103 +90,132 @@ const FaqSection = () => (
     sx={{
       background: 'linear-gradient(-15deg, #efefef 100%, #FFF 0%)',
       color: '#000000',
-      pt: { xs: 4 },
-      pb: { xs: 4, sm: 16 },
-      pl: { xs: 2, sm: 8 },
-      pr: { xs: 2, sm: 8 },
+      py: { xs: 8, sm: 12, md: 16 },
     }}
   >
-    <Typography
-      mb={5}
-      sx={{
-        fontFamily: 'Product Sans, sans-serif',
-        fontWeight: '400',
-        textAlign: 'center',
-        fontSize: { xs: '35px', sm: '20px', md: '60px' },
-      }}
-    >
-      Frequently Asked Questions
-    </Typography>
-    <Grid xs={12} container>
-      <Grid xs={12} sm={6}>
-        <Stepper orientation="vertical">
-          {steps.map((step) => (
-            <Step key={step.label} active>
-              <StepLabel
-                StepIconComponent={stepIconComponent}
-              >
-                <Typography
-                  style={{
-                    fontFamily: 'Product Sans, sans-serif',
-                    fontWeight: '400',
-                    color: '#000000',
-                  }}
-                >
-                  {step.label}
-                </Typography>
-              </StepLabel>
-              <StepContent>
-                <Typography sx={{
-                  fontFamily: 'Product Sans',
-                  fontWeight: '300',
-                }}
-                >
-                  {step.description}
-
-                </Typography>
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <Stepper orientation="vertical">
-          {useage.map((step) => (
-            <Step key={step.label} active>
-              <StepLabel
-                StepIconComponent={stepIconComponent}
-              >
-                <Typography
-                  style={{
-                    fontFamily: 'Product Sans, sans-serif',
-                    fontWeight: '400',
-                    color: '#000000',
-                  }}
-                >
-                  {step.label}
-                </Typography>
-              </StepLabel>
-              <StepContent>
-                <Typography style={{
-                  fontFamily: 'Product Sans, sans-serif',
-                  fontWeight: '300',
-                }}
-                >
-                  {step.description}
-                </Typography>
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-      </Grid>
-    </Grid>
-    <Box pt={3} pb={3}>
-      <Button
-        variant="contained"
-        href="#contained-buttons"
+    <Container maxWidth="xl">
+      <Typography
+        variant="h2"
         sx={{
-          borderRadius: '23px',
           fontFamily: 'Product Sans, sans-serif',
-        }}
-        endIcon={<ChevronRightIcon />}
-        onClick={() => {
-          window.open('https://forms.gle/9H5VgxWzHVAcnwsC6', '_blank');
+          fontWeight: '400',
+          textAlign: 'center',
+          fontSize: { xs: '2.5rem', sm: '3rem', md: '4rem', lg: '5rem' },
+          mb: { xs: 6, sm: 8 },
+          lineHeight: 1.1,
         }}
       >
-        Get a free quote
-      </Button>
-    </Box>
-
+        Frequently Asked Questions
+      </Typography>
+      
+      <Grid container spacing={{ xs: 4, md: 6 }}>
+        <Grid item xs={12} md={6}>
+          <Stepper orientation="vertical" sx={{ '& .MuiStepConnector-root': { ml: 2 } }}>
+            {steps.map((step, index) => (
+              <Step key={step.label} active>
+                <StepLabel
+                  StepIconComponent={stepIconComponent}
+                  sx={{
+                    '& .MuiStepLabel-labelContainer': {
+                      ml: 2,
+                    },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: 'Product Sans, sans-serif',
+                      fontWeight: '400',
+                      color: '#000000',
+                      fontSize: { xs: '1rem', md: '1.1rem' },
+                    }}
+                  >
+                    {step.label}
+                  </Typography>
+                </StepLabel>
+                <StepContent sx={{ ml: 2 }}>
+                  <Typography 
+                    sx={{
+                      fontFamily: 'Product Sans, sans-serif',
+                      fontWeight: '300',
+                      fontSize: { xs: '0.9rem', md: '1rem' },
+                      lineHeight: 1.6,
+                      mt: 1,
+                    }}
+                  >
+                    {step.description}
+                  </Typography>
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Stepper orientation="vertical" sx={{ '& .MuiStepConnector-root': { ml: 2 } }}>
+            {useage.map((step, index) => (
+              <Step key={step.label} active>
+                <StepLabel
+                  StepIconComponent={stepIconComponent}
+                  sx={{
+                    '& .MuiStepLabel-labelContainer': {
+                      ml: 2,
+                    },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: 'Product Sans, sans-serif',
+                      fontWeight: '400',
+                      color: '#000000',
+                      fontSize: { xs: '1rem', md: '1.1rem' },
+                    }}
+                  >
+                    {step.label}
+                  </Typography>
+                </StepLabel>
+                <StepContent sx={{ ml: 2 }}>
+                  <Typography 
+                    sx={{
+                      fontFamily: 'Product Sans, sans-serif',
+                      fontWeight: '300',
+                      fontSize: { xs: '0.9rem', md: '1rem' },
+                      lineHeight: 1.6,
+                      mt: 1,
+                    }}
+                  >
+                    {step.description}
+                  </Typography>
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+        </Grid>
+      </Grid>
+      
+      <Box sx={{ mt: 6, textAlign: 'center' }}>
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            borderRadius: '23px',
+            fontFamily: 'Product Sans, sans-serif',
+            fontSize: { xs: '1rem', sm: '1.1rem' },
+            px: 4,
+            py: 1.5,
+            textTransform: 'none',
+            boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
+            '&:hover': {
+              boxShadow: '0 6px 20px 0 rgba(0,0,0,0.15)',
+            },
+          }}
+          endIcon={<ChevronRightIcon />}
+          onClick={() => {
+            window.open('https://forms.gle/9H5VgxWzHVAcnwsC6', '_blank');
+          }}
+        >
+          Get a free quote
+        </Button>
+      </Box>
+    </Container>
   </Box>
 );
 
