@@ -12,7 +12,23 @@ import ServerProvider from './ServerProvider';
 import ErrorBoundary from './ErrorBoundary';
 import AppThemeProvider from './AppThemeProvider';
 
-preloadImages();
+// Defer image preloading to non-blocking - load after initial render
+if (typeof window !== 'undefined') {
+  // Use requestIdleCallback if available, otherwise setTimeout
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      preloadImages().catch(() => {
+        // Silently fail if preloading doesn't complete
+      });
+    }, { timeout: 2000 });
+  } else {
+    setTimeout(() => {
+      preloadImages().catch(() => {
+        // Silently fail if preloading doesn't complete
+      });
+    }, 100);
+  }
+}
 
 const root = createRoot(document.getElementById('root'));
 root.render(
