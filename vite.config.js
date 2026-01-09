@@ -36,11 +36,12 @@ export default defineConfig(() => ({
             if (id.includes('exceljs')) {
               return 'vendor-excel';
             }
-            // MUI - split into core and icons
+            // MUI and Emotion - keep together (Emotion is tightly coupled with MUI)
+            // Split into icons and core, but keep Emotion with MUI core
             if (id.includes('@mui/icons-material')) {
               return 'vendor-mui-icons';
             }
-            if (id.includes('@mui')) {
+            if (id.includes('@mui') || id.includes('@emotion')) {
               return 'vendor-mui';
             }
             // React and React DOM
@@ -53,10 +54,6 @@ export default defineConfig(() => ({
             // Redux
             if (id.includes('@reduxjs') || id.includes('react-redux')) {
               return 'vendor-redux';
-            }
-            // Emotion (MUI styling)
-            if (id.includes('@emotion')) {
-              return 'vendor-emotion';
             }
             // All other node_modules
             return 'vendor';
