@@ -14,59 +14,6 @@ export default defineConfig(() => ({
   },
   build: {
     outDir: 'build',
-    sourcemap: false, // Disable sourcemaps in production for smaller builds
-    minify: 'esbuild', // Use esbuild (faster than terser, built-in)
-    // Note: esbuild doesn't support drop_console, but it's faster
-    // For production, you can use terser if you need drop_console
-    // For now, esbuild provides better build performance
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          // Split vendor libraries into separate chunks
-          if (id.includes('node_modules')) {
-            // MapLibre GL - large mapping library
-            if (id.includes('maplibre-gl') || id.includes('@mapbox')) {
-              return 'vendor-maplibre';
-            }
-            // Recharts - charting library
-            if (id.includes('recharts')) {
-              return 'vendor-charts';
-            }
-            // ExcelJS - large spreadsheet library
-            if (id.includes('exceljs')) {
-              return 'vendor-excel';
-            }
-            // MUI and Emotion - keep together (Emotion is tightly coupled with MUI)
-            // Split into icons and core, but keep Emotion with MUI core
-            if (id.includes('@mui/icons-material')) {
-              return 'vendor-mui-icons';
-            }
-            if (id.includes('@mui') || id.includes('@emotion')) {
-              return 'vendor-mui';
-            }
-            // React and React DOM
-            if (id.includes('react-dom')) {
-              return 'vendor-react-dom';
-            }
-            if (id.includes('react')) {
-              return 'vendor-react';
-            }
-            // Redux
-            if (id.includes('@reduxjs') || id.includes('react-redux')) {
-              return 'vendor-redux';
-            }
-            // All other node_modules
-            return 'vendor';
-          }
-        },
-        // Optimize chunk file names
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-      },
-    },
-    // Increase chunk size warning limit since we're splitting properly
-    chunkSizeWarningLimit: 1000,
   },
   plugins: [
     svgr(),
@@ -77,37 +24,6 @@ export default defineConfig(() => ({
         navigateFallbackDenylist: [/^\/api/],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         globPatterns: ['**/*.{js,css,html,woff,woff2,mp3}'],
-        // Optimize caching strategy
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'gstatic-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
       },
       manifest: {
         short_name: '${title}',

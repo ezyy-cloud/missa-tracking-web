@@ -1,80 +1,70 @@
-import { lazy, Suspense } from 'react';
 import {
   Route, Routes,
   useSearchParams,
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import MainPage from './main/MainPage';
+import CombinedReportPage from './reports/CombinedReportPage';
+import PositionsReportPage from './reports/PositionsReportPage';
+import ServerPage from './settings/ServerPage';
+import UsersPage from './settings/UsersPage';
+import DevicePage from './settings/DevicePage';
+import UserPage from './settings/UserPage';
+import NotificationsPage from './settings/NotificationsPage';
+import NotificationPage from './settings/NotificationPage';
+import GroupsPage from './settings/GroupsPage';
+import GroupPage from './settings/GroupPage';
+import PositionPage from './other/PositionPage';
+import NetworkPage from './other/NetworkPage';
+import EventReportPage from './reports/EventReportPage';
+import ReplayPage from './other/ReplayPage';
+import TripReportPage from './reports/TripReportPage';
+import StopReportPage from './reports/StopReportPage';
+import SummaryReportPage from './reports/SummaryReportPage';
+import ChartReportPage from './reports/ChartReportPage';
+import DriversPage from './settings/DriversPage';
+import DriverPage from './settings/DriverPage';
+import CalendarsPage from './settings/CalendarsPage';
+import CalendarPage from './settings/CalendarPage';
+import ComputedAttributesPage from './settings/ComputedAttributesPage';
+import ComputedAttributePage from './settings/ComputedAttributePage';
+import MaintenancesPage from './settings/MaintenancesPage';
+import MaintenancePage from './settings/MaintenancePage';
+import CommandsPage from './settings/CommandsPage';
+import CommandPage from './settings/CommandPage';
+import StatisticsPage from './reports/StatisticsPage';
+import LoginPage from './login/LoginPage';
+import RegisterPage from './login/RegisterPage';
+import ResetPasswordPage from './login/ResetPasswordPage';
+import GeofencesPage from './other/GeofencesPage';
+import GeofencePage from './settings/GeofencePage';
 import { useEffectAsync } from './reactHelper';
 import { devicesActions } from './store';
+import EventPage from './other/EventPage';
+import PreferencesPage from './settings/PreferencesPage';
+import AccumulatorsPage from './settings/AccumulatorsPage';
+import CommandDevicePage from './settings/CommandDevicePage';
+import CommandGroupPage from './settings/CommandGroupPage';
+import App from './App';
+import ChangeServerPage from './login/ChangeServerPage';
+import DevicesPage from './settings/DevicesPage';
+import ScheduledPage from './reports/ScheduledPage';
+import DeviceConnectionsPage from './settings/DeviceConnectionsPage';
+import GroupConnectionsPage from './settings/GroupConnectionsPage';
+import UserConnectionsPage from './settings/UserConnectionsPage';
+import LogsPage from './reports/LogsPage';
+import SharePage from './settings/SharePage';
+import AnnouncementPage from './settings/AnnouncementPage';
+import EmulatorPage from './other/EmulatorPage';
 import Loader from './common/components/Loader';
 import { generateLoginToken } from './common/components/NativeInterface';
 import { useLocalization } from './common/components/LocalizationProvider';
 import fetchOrThrow from './common/util/fetchOrThrow';
-import App from './App';
+import AuditPage from './reports/AuditPage';
 
-// Lazy load all route components for code splitting
-const MainPage = lazy(() => import('./main/MainPage'));
-const HomePage = lazy(() => import('./landing/HomePage'));
-const LoginPage = lazy(() => import('./login/LoginPage'));
-const RegisterPage = lazy(() => import('./login/RegisterPage'));
-const ResetPasswordPage = lazy(() => import('./login/ResetPasswordPage'));
-const ChangeServerPage = lazy(() => import('./login/ChangeServerPage'));
-const PrivacyPolicyPage = lazy(() => import('./other/PrivacyPolicyPage'));
-const TermsAndConditionsPage = lazy(() => import('./other/TermsAndConditionsPage'));
-
-// Other pages
-const PositionPage = lazy(() => import('./other/PositionPage'));
-const NetworkPage = lazy(() => import('./other/NetworkPage'));
-const EventPage = lazy(() => import('./other/EventPage'));
-const ReplayPage = lazy(() => import('./other/ReplayPage'));
-const GeofencesPage = lazy(() => import('./other/GeofencesPage'));
-const EmulatorPage = lazy(() => import('./other/EmulatorPage'));
-
-// Settings pages - lazy loaded
-const ServerPage = lazy(() => import('./settings/ServerPage'));
-const UsersPage = lazy(() => import('./settings/UsersPage'));
-const UserPage = lazy(() => import('./settings/UserPage'));
-const DevicesPage = lazy(() => import('./settings/DevicesPage'));
-const DevicePage = lazy(() => import('./settings/DevicePage'));
-const GroupsPage = lazy(() => import('./settings/GroupsPage'));
-const GroupPage = lazy(() => import('./settings/GroupPage'));
-const DriversPage = lazy(() => import('./settings/DriversPage'));
-const DriverPage = lazy(() => import('./settings/DriverPage'));
-const CalendarsPage = lazy(() => import('./settings/CalendarsPage'));
-const CalendarPage = lazy(() => import('./settings/CalendarPage'));
-const ComputedAttributesPage = lazy(() => import('./settings/ComputedAttributesPage'));
-const ComputedAttributePage = lazy(() => import('./settings/ComputedAttributePage'));
-const MaintenancesPage = lazy(() => import('./settings/MaintenancesPage'));
-const MaintenancePage = lazy(() => import('./settings/MaintenancePage'));
-const CommandsPage = lazy(() => import('./settings/CommandsPage'));
-const CommandPage = lazy(() => import('./settings/CommandPage'));
-const NotificationsPage = lazy(() => import('./settings/NotificationsPage'));
-const NotificationPage = lazy(() => import('./settings/NotificationPage'));
-const GeofencePage = lazy(() => import('./settings/GeofencePage'));
-const PreferencesPage = lazy(() => import('./settings/PreferencesPage'));
-const AccumulatorsPage = lazy(() => import('./settings/AccumulatorsPage'));
-const CommandDevicePage = lazy(() => import('./settings/CommandDevicePage'));
-const CommandGroupPage = lazy(() => import('./settings/CommandGroupPage'));
-const DeviceConnectionsPage = lazy(() => import('./settings/DeviceConnectionsPage'));
-const GroupConnectionsPage = lazy(() => import('./settings/GroupConnectionsPage'));
-const UserConnectionsPage = lazy(() => import('./settings/UserConnectionsPage'));
-const SharePage = lazy(() => import('./settings/SharePage'));
-const AnnouncementPage = lazy(() => import('./settings/AnnouncementPage'));
-
-// Reports pages - lazy loaded (these are heavy with charts)
-const CombinedReportPage = lazy(() => import('./reports/CombinedReportPage'));
-const PositionsReportPage = lazy(() => import('./reports/PositionsReportPage'));
-const EventReportPage = lazy(() => import('./reports/EventReportPage'));
-const TripReportPage = lazy(() => import('./reports/TripReportPage'));
-const StopReportPage = lazy(() => import('./reports/StopReportPage'));
-const SummaryReportPage = lazy(() => import('./reports/SummaryReportPage'));
-const ChartReportPage = lazy(() => import('./reports/ChartReportPage'));
-const StatisticsPage = lazy(() => import('./reports/StatisticsPage'));
-const ScheduledPage = lazy(() => import('./reports/ScheduledPage'));
-const LogsPage = lazy(() => import('./reports/LogsPage'));
-const AuditPage = lazy(() => import('./reports/AuditPage'));
-
-// Removed SuspenseWrapper - will use single Suspense around Routes
+import HomePage from './landing/HomePage';
+import PrivacyPolicyPage from './other/PrivacyPolicyPage';
+import TermsAndConditionsPage from './other/TermsAndConditionsPage';
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -119,24 +109,22 @@ const Navigation = () => {
     }
 
     setSearchParams(newParams, { replace: true });
-  }, [hasQueryParams, searchParams, setSearchParams, dispatch, setLocalLanguage]);
+  }, [hasQueryParams, searchParams, setSearchParams]);
 
   if (hasQueryParams) {
     return (<Loader />);
   }
-
   return (
-    <Suspense fallback={<Loader />}>
-      <Routes>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/change-server" element={<ChangeServerPage />} />
-        <Route path="/" element={<App />}>
-          <Route index element={<MainPage />} />
+    <Routes>
+      <Route path="/home" element={<HomePage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/change-server" element={<ChangeServerPage />} />
+      <Route path="/" element={<App />}>
+        <Route index element={<MainPage />} />
 
         <Route path="position/:id" element={<PositionPage />} />
         <Route path="network/:positionId" element={<NetworkPage />} />
@@ -201,8 +189,7 @@ const Navigation = () => {
           <Route path="logs" element={<LogsPage />} />
         </Route>
       </Route>
-      </Routes>
-    </Suspense>
+    </Routes>
   );
 };
 
