@@ -1,4 +1,5 @@
-# repository root netlify.toml
+# Netlify configuration file
+# This React SPA does not require prerendering (legacy prerendering is deprecated)
 
 [build]
   command = "npm run build"

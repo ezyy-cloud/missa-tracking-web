@@ -21,20 +21,41 @@ const UpdateController = () => {
             return;
           }
 
-          if (('connection' in navigator) && !navigator.onLine) {
-            return;
+          // Improved network detection - don't block on mobile data
+          // navigator.onLine can be unreliable on mobile devices
+          if (('connection' in navigator) && navigator.connection) {
+            const connection = navigator.connection;
+            // Only skip if explicitly offline or on a very slow connection
+            if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+              // Still allow on 2g, but with longer timeout
+            }
           }
 
-          const newSW = await fetch(swUrl, {
-            cache: 'no-store',
-            headers: {
-              cache: 'no-store',
-              'cache-control': 'no-cache',
-            },
-          });
+          // Add timeout to prevent hanging on slow connections
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-          if (newSW?.status === 200) {
-            await swRegistration.update();
+          try {
+            const newSW = await fetch(swUrl, {
+              cache: 'no-store',
+              signal: controller.signal,
+              headers: {
+                cache: 'no-store',
+                'cache-control': 'no-cache',
+              },
+            });
+
+            clearTimeout(timeoutId);
+
+            if (newSW?.status === 200) {
+              await swRegistration.update();
+            }
+          } catch (error) {
+            clearTimeout(timeoutId);
+            // Silently fail on network errors - don't block app functionality
+            if (error.name !== 'AbortError') {
+              // Only log non-timeout errors if needed
+            }
           }
         }, swUpdateInterval);
       }
