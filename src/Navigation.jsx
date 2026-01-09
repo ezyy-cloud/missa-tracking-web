@@ -74,6 +74,8 @@ const ScheduledPage = lazy(() => import('./reports/ScheduledPage'));
 const LogsPage = lazy(() => import('./reports/LogsPage'));
 const AuditPage = lazy(() => import('./reports/AuditPage'));
 
+// Removed SuspenseWrapper - will use single Suspense around Routes
+
 const Navigation = () => {
   const dispatch = useDispatch();
   const { setLocalLanguage } = useLocalization();
@@ -117,95 +119,90 @@ const Navigation = () => {
     }
 
     setSearchParams(newParams, { replace: true });
-  }, [hasQueryParams, searchParams, setSearchParams]);
+  }, [hasQueryParams, searchParams, setSearchParams, dispatch, setLocalLanguage]);
 
   if (hasQueryParams) {
     return (<Loader />);
   }
-  
-  // Suspense wrapper for lazy loaded components
-  const SuspenseWrapper = ({ children }) => (
-    <Suspense fallback={<Loader />}>
-      {children}
-    </Suspense>
-  );
 
   return (
-    <Routes>
-      <Route path="/home" element={<SuspenseWrapper><HomePage /></SuspenseWrapper>} />
-      <Route path="/privacy-policy" element={<SuspenseWrapper><PrivacyPolicyPage /></SuspenseWrapper>} />
-      <Route path="/terms-conditions" element={<SuspenseWrapper><TermsAndConditionsPage /></SuspenseWrapper>} />
-      <Route path="/login" element={<SuspenseWrapper><LoginPage /></SuspenseWrapper>} />
-      <Route path="/register" element={<SuspenseWrapper><RegisterPage /></SuspenseWrapper>} />
-      <Route path="/reset-password" element={<SuspenseWrapper><ResetPasswordPage /></SuspenseWrapper>} />
-      <Route path="/change-server" element={<SuspenseWrapper><ChangeServerPage /></SuspenseWrapper>} />
-      <Route path="/" element={<App />}>
-        <Route index element={<SuspenseWrapper><MainPage /></SuspenseWrapper>} />
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-conditions" element={<TermsAndConditionsPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/change-server" element={<ChangeServerPage />} />
+        <Route path="/" element={<App />}>
+          <Route index element={<MainPage />} />
 
-        <Route path="position/:id" element={<SuspenseWrapper><PositionPage /></SuspenseWrapper>} />
-        <Route path="network/:positionId" element={<SuspenseWrapper><NetworkPage /></SuspenseWrapper>} />
-        <Route path="event/:id" element={<SuspenseWrapper><EventPage /></SuspenseWrapper>} />
-        <Route path="replay" element={<SuspenseWrapper><ReplayPage /></SuspenseWrapper>} />
-        <Route path="geofences" element={<SuspenseWrapper><GeofencesPage /></SuspenseWrapper>} />
-        <Route path="emulator" element={<SuspenseWrapper><EmulatorPage /></SuspenseWrapper>} />
+        <Route path="position/:id" element={<PositionPage />} />
+        <Route path="network/:positionId" element={<NetworkPage />} />
+        <Route path="event/:id" element={<EventPage />} />
+        <Route path="replay" element={<ReplayPage />} />
+        <Route path="geofences" element={<GeofencesPage />} />
+        <Route path="emulator" element={<EmulatorPage />} />
 
         <Route path="settings">
-          <Route path="accumulators/:deviceId" element={<SuspenseWrapper><AccumulatorsPage /></SuspenseWrapper>} />
-          <Route path="announcement" element={<SuspenseWrapper><AnnouncementPage /></SuspenseWrapper>} />
-          <Route path="calendars" element={<SuspenseWrapper><CalendarsPage /></SuspenseWrapper>} />
-          <Route path="calendar/:id" element={<SuspenseWrapper><CalendarPage /></SuspenseWrapper>} />
-          <Route path="calendar" element={<SuspenseWrapper><CalendarPage /></SuspenseWrapper>} />
-          <Route path="commands" element={<SuspenseWrapper><CommandsPage /></SuspenseWrapper>} />
-          <Route path="command/:id" element={<SuspenseWrapper><CommandPage /></SuspenseWrapper>} />
-          <Route path="command" element={<SuspenseWrapper><CommandPage /></SuspenseWrapper>} />
-          <Route path="attributes" element={<SuspenseWrapper><ComputedAttributesPage /></SuspenseWrapper>} />
-          <Route path="attribute/:id" element={<SuspenseWrapper><ComputedAttributePage /></SuspenseWrapper>} />
-          <Route path="attribute" element={<SuspenseWrapper><ComputedAttributePage /></SuspenseWrapper>} />
-          <Route path="devices" element={<SuspenseWrapper><DevicesPage /></SuspenseWrapper>} />
-          <Route path="device/:id/connections" element={<SuspenseWrapper><DeviceConnectionsPage /></SuspenseWrapper>} />
-          <Route path="device/:id/command" element={<SuspenseWrapper><CommandDevicePage /></SuspenseWrapper>} />
-          <Route path="device/:id/share" element={<SuspenseWrapper><SharePage /></SuspenseWrapper>} />
-          <Route path="device/:id" element={<SuspenseWrapper><DevicePage /></SuspenseWrapper>} />
-          <Route path="device" element={<SuspenseWrapper><DevicePage /></SuspenseWrapper>} />
-          <Route path="drivers" element={<SuspenseWrapper><DriversPage /></SuspenseWrapper>} />
-          <Route path="driver/:id" element={<SuspenseWrapper><DriverPage /></SuspenseWrapper>} />
-          <Route path="driver" element={<SuspenseWrapper><DriverPage /></SuspenseWrapper>} />
-          <Route path="geofence/:id" element={<SuspenseWrapper><GeofencePage /></SuspenseWrapper>} />
-          <Route path="geofence" element={<SuspenseWrapper><GeofencePage /></SuspenseWrapper>} />
-          <Route path="groups" element={<SuspenseWrapper><GroupsPage /></SuspenseWrapper>} />
-          <Route path="group/:id/connections" element={<SuspenseWrapper><GroupConnectionsPage /></SuspenseWrapper>} />
-          <Route path="group/:id/command" element={<SuspenseWrapper><CommandGroupPage /></SuspenseWrapper>} />
-          <Route path="group/:id" element={<SuspenseWrapper><GroupPage /></SuspenseWrapper>} />
-          <Route path="group" element={<SuspenseWrapper><GroupPage /></SuspenseWrapper>} />
-          <Route path="maintenances" element={<SuspenseWrapper><MaintenancesPage /></SuspenseWrapper>} />
-          <Route path="maintenance/:id" element={<SuspenseWrapper><MaintenancePage /></SuspenseWrapper>} />
-          <Route path="maintenance" element={<SuspenseWrapper><MaintenancePage /></SuspenseWrapper>} />
-          <Route path="notifications" element={<SuspenseWrapper><NotificationsPage /></SuspenseWrapper>} />
-          <Route path="notification/:id" element={<SuspenseWrapper><NotificationPage /></SuspenseWrapper>} />
-          <Route path="notification" element={<SuspenseWrapper><NotificationPage /></SuspenseWrapper>} />
-          <Route path="preferences" element={<SuspenseWrapper><PreferencesPage /></SuspenseWrapper>} />
-          <Route path="server" element={<SuspenseWrapper><ServerPage /></SuspenseWrapper>} />
-          <Route path="users" element={<SuspenseWrapper><UsersPage /></SuspenseWrapper>} />
-          <Route path="user/:id/connections" element={<SuspenseWrapper><UserConnectionsPage /></SuspenseWrapper>} />
-          <Route path="user/:id" element={<SuspenseWrapper><UserPage /></SuspenseWrapper>} />
-          <Route path="user" element={<SuspenseWrapper><UserPage /></SuspenseWrapper>} />
+          <Route path="accumulators/:deviceId" element={<AccumulatorsPage />} />
+          <Route path="announcement" element={<AnnouncementPage />} />
+          <Route path="calendars" element={<CalendarsPage />} />
+          <Route path="calendar/:id" element={<CalendarPage />} />
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="commands" element={<CommandsPage />} />
+          <Route path="command/:id" element={<CommandPage />} />
+          <Route path="command" element={<CommandPage />} />
+          <Route path="attributes" element={<ComputedAttributesPage />} />
+          <Route path="attribute/:id" element={<ComputedAttributePage />} />
+          <Route path="attribute" element={<ComputedAttributePage />} />
+          <Route path="devices" element={<DevicesPage />} />
+          <Route path="device/:id/connections" element={<DeviceConnectionsPage />} />
+          <Route path="device/:id/command" element={<CommandDevicePage />} />
+          <Route path="device/:id/share" element={<SharePage />} />
+          <Route path="device/:id" element={<DevicePage />} />
+          <Route path="device" element={<DevicePage />} />
+          <Route path="drivers" element={<DriversPage />} />
+          <Route path="driver/:id" element={<DriverPage />} />
+          <Route path="driver" element={<DriverPage />} />
+          <Route path="geofence/:id" element={<GeofencePage />} />
+          <Route path="geofence" element={<GeofencePage />} />
+          <Route path="groups" element={<GroupsPage />} />
+          <Route path="group/:id/connections" element={<GroupConnectionsPage />} />
+          <Route path="group/:id/command" element={<CommandGroupPage />} />
+          <Route path="group/:id" element={<GroupPage />} />
+          <Route path="group" element={<GroupPage />} />
+          <Route path="maintenances" element={<MaintenancesPage />} />
+          <Route path="maintenance/:id" element={<MaintenancePage />} />
+          <Route path="maintenance" element={<MaintenancePage />} />
+          <Route path="notifications" element={<NotificationsPage />} />
+          <Route path="notification/:id" element={<NotificationPage />} />
+          <Route path="notification" element={<NotificationPage />} />
+          <Route path="preferences" element={<PreferencesPage />} />
+          <Route path="server" element={<ServerPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="user/:id/connections" element={<UserConnectionsPage />} />
+          <Route path="user/:id" element={<UserPage />} />
+          <Route path="user" element={<UserPage />} />
         </Route>
 
         <Route path="reports">
-          <Route path="combined" element={<SuspenseWrapper><CombinedReportPage /></SuspenseWrapper>} />
-          <Route path="chart" element={<SuspenseWrapper><ChartReportPage /></SuspenseWrapper>} />
-          <Route path="events" element={<SuspenseWrapper><EventReportPage /></SuspenseWrapper>} />
-          <Route path="route" element={<SuspenseWrapper><PositionsReportPage /></SuspenseWrapper>} />
-          <Route path="stops" element={<SuspenseWrapper><StopReportPage /></SuspenseWrapper>} />
-          <Route path="summary" element={<SuspenseWrapper><SummaryReportPage /></SuspenseWrapper>} />
-          <Route path="trips" element={<SuspenseWrapper><TripReportPage /></SuspenseWrapper>} />
-          <Route path="scheduled" element={<SuspenseWrapper><ScheduledPage /></SuspenseWrapper>} />
-          <Route path="statistics" element={<SuspenseWrapper><StatisticsPage /></SuspenseWrapper>} />
-          <Route path="audit" element={<SuspenseWrapper><AuditPage /></SuspenseWrapper>} />
-          <Route path="logs" element={<SuspenseWrapper><LogsPage /></SuspenseWrapper>} />
+          <Route path="combined" element={<CombinedReportPage />} />
+          <Route path="chart" element={<ChartReportPage />} />
+          <Route path="events" element={<EventReportPage />} />
+          <Route path="route" element={<PositionsReportPage />} />
+          <Route path="stops" element={<StopReportPage />} />
+          <Route path="summary" element={<SummaryReportPage />} />
+          <Route path="trips" element={<TripReportPage />} />
+          <Route path="scheduled" element={<ScheduledPage />} />
+          <Route path="statistics" element={<StatisticsPage />} />
+          <Route path="audit" element={<AuditPage />} />
+          <Route path="logs" element={<LogsPage />} />
         </Route>
       </Route>
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 };
 
